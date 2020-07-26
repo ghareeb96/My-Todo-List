@@ -24,7 +24,7 @@ body {
 
         .title {
             width: 100%;
-            height: 10vh;
+            height: auto;
             background-color: rgba(#fff, 0.3);
             display: flex;
             align-items: center;
@@ -35,7 +35,7 @@ body {
 
             h1 {
                 color: $primary-color;
-                font-size: 4rem;
+                font-size: 5rem;
                 letter-spacing: 5px;
                 height: 100%;
             }
@@ -57,7 +57,7 @@ body {
             min-width: 300px;
             width: 40%;
             height: 50px;
-            margin-top: 90px;
+            margin-top: 15vh;
 
             #newTodo {
                 width: 85%;
@@ -91,8 +91,6 @@ body {
                     color: #0E131F;
                     font-size: 2.6rem;
                     transition: all 0.2s linear;
-
-
                 }
 
             }
@@ -101,18 +99,20 @@ body {
         .list {
             display: flex;
             flex-direction: column;
-            min-height: 60vh;
+            height: 60vh;
             background-color: rgba(#fff, 0.5);
             min-width: 300px;
             width: 40%;
-            box-shadow: 0 10px 30px 0 rgba(#000, 0.5);
+            overflow-y: auto;
+            box-shadow: 0 20px 20px 0 rgba(#000, 0.7);
             z-index: 2;
+            border: 5px solid white;
 
             .todo {
                 display: flex;
                 flex-direction: row;
                 width: 100%;
-                height: 55px;
+                height: auto;
                 align-items: center;
                 z-index: 2;
                 transition: all 0.3s linear;
@@ -121,7 +121,7 @@ body {
 
                 &.delete {
                     a:hover {
-                        background-color: rgba(110, 0, 0, 0.479);
+                        // background-color: rgb(133, 0, 0);
 
                         i {
                             color: white;
@@ -133,7 +133,7 @@ body {
 
                 &.active {
                     a:hover {
-                        background-color: rgba(0, 92, 0, 0.541);
+                        // background-color: rgb(0, 77, 0);
 
                         i {
                             color: white;
@@ -144,27 +144,34 @@ body {
 
             .task {
                 width: 80%;
-                // color: white;
+                height: 100%;
+                padding: 0.4rem;
+                // color: #272727;
+
 
 
                 h4 {
                     letter-spacing: 1px;
-                    padding: 0.5rem;
-                    font-size: 1rem;
+                    font-size: 1.5rem;
+                    margin: 5px 0 1.2rem 0;
+                    overflow-wrap: break-word;
                 }
 
                 p {
                     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-                    font-size: 0.8rem;
-                    padding: 0 0.5rem;
+                    font-size: 0.9rem;
+
+                    span {
+                        font-weight: bold;
+                    }
 
                 }
             }
 
 
             a {
-                width: 15%;
-                height: 100%;
+                width: 10%;
+                height: inherit;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -175,6 +182,7 @@ body {
 
                 i {
                     color: #000;
+                    height: 100%;
                     font-size: 2rem;
                     transition: all 0.2s linear;
                 }
@@ -183,5 +191,17 @@ body {
         }
 
 
+    }
+}
+
+@media screen and (max-width : 1200px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width : 800px) {
+    html {
+        font-size: 10px;
     }
 }

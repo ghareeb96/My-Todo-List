@@ -3,15 +3,16 @@ const addBtn = $("#addBtn");
 const todo = $(".todo");
 let completedBtn = $('.completed');
 let deleteBtn = $('.delete');
-const trueColor = "rgba(0, 92, 0, 0.541)";
-const falseColor = "rgba(110, 0, 0, 0.479)";
+const trueColor = "rgba(0, 77, 0, 0.678)";
+const falseColor = "rgba(133, 0, 0, 0.767)";
 
 
 class Todo {
-    constructor(task, isCompleted, dateAdded) {
+    constructor(task, isCompleted, dateAdded, dateCompleted) {
         this.task = task;
         this.isCompleted = isCompleted;
         this.dateAdded = dateAdded;
+        this.dateCompleted = dateCompleted;
     }
 }
 
@@ -28,9 +29,6 @@ class UI {
         const todos = Store.getTodos();
         todos.forEach((todo) => {
             UI.addTodoToList(todo)
-            if (todo.isCompleted === false) {
-
-            }
         });
     }
 
@@ -40,10 +38,11 @@ class UI {
 
         todoList.append(
             `
-            <div class="todo" style = "background-color: ${todo.isCompleted === true ? trueColor : falseColor };">
+            <div class="todo" style="background-color : ${todo.isCompleted ?  trueColor:falseColor}">
                 <div class="task">
                     <h4>${todo.task}</h4>
-                    <p class="time">Added : ${todo.dateAdded}</p>
+                    <p class="time"><span>Added : </span>${todo.dateAdded}</p>
+                    <p class="comp"><span>Completed </span>: ${todo.dateCompleted}</p>
                 </div>
                 <a class="delete">
                     <i class="fas fa-trash-alt"></i>
@@ -62,6 +61,22 @@ class UI {
         } else {
             d_todo.parentElement.parentElement.remove();
         }
+    }
+
+    static completeTodo(date) {
+        let todos = Store.getTodos();
+        let dateComp = new Date();
+        let newDate = dateComp + '';
+        newDate = newDate.split("GMT")[0];
+        todos.forEach((todo) => {
+            if ("Added : " + todo.dateAdded == date + " " && todo.isCompleted === false) {
+                todo.isCompleted = true;
+                todo.dateCompleted = newDate;
+                localStorage.setItem("todos", JSON.stringify(todos));
+                location.reload();
+            }
+        })
+
     }
 
 
@@ -107,14 +122,14 @@ addBtn.click(() => {
     UI.toggleClass($(".delete"), "delete");
 
     if (inputField.val()) {
-        let newTodo = new Todo(inputField.val(), false, newDate);
+        let newTodo = new Todo(inputField.val(), false, newDate, "Not Yet");
         UI.addTodoToList(newTodo);
         Store.addTodo(newTodo);
 
         UI.toggleClass($(".completed"), "active");
         UI.toggleClass($(".delete"), "delete");
-
     }
+    inputField.val("");
 
 })
 
@@ -124,14 +139,21 @@ $(document).on("click", ".delete", function (e) {
     UI.deleteTodo(e.target);
     if (e.target.classList.contains("delete")) {
         Store.removeTodo(e.target.previousElementSibling.children[1].innerText);
-        // console.log(e.target.previousElementSibling.children[1].innerText);
     } else {
         Store.removeTodo(e.target.parentElement.previousElementSibling.children[1].innerText);
-        // console.log(e.target.parentElement.previousElementSibling.children[1].innerText);
+
     }
 
 })
 
+
+$(document).on("click", ".completed", function (e) {
+    if (e.target.classList.contains("completed")) {
+        UI.completeTodo(e.target.previousElementSibling.previousElementSibling.children[1].innerText);
+    } else {
+        UI.completeTodo(e.target.parentElement.previousElementSibling.previousElementSibling.children[1].innerText);
+    }
+});
 
 UI.toggleClass($(".completed"), "active");
 UI.toggleClass($(".delete"), "delete");
